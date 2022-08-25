@@ -37,3 +37,7 @@ print(f"getattr_ids : {id(getattr_result)}")
 print(f"hasattr : {hasattr(drama_instance, 'name')}")
 print(f"hasattr : {hasattr(drama_instance, 'nothing')}")
 
+def something(*args, **kwargs):
+    print(args)
+    print(kwargs)
+
