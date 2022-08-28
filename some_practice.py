@@ -110,29 +110,58 @@
 # myfunc = outer_func(10)
 # myfunc()
 
-import datetime
+# import datetime
+#
+#
+# def datetime_decorator(func): # 데코레이터로 사용할 함수 만들어줌 closure 형태로
+#     def decorated():
+#         print(f"docorator_inner_function_before_work: {datetime.datetime.now()}")
+#         func()
+#         print(f"docorator_inner_function_after_work: {datetime.datetime.now()}")
+#     return decorated()
+#
+# @datetime_decorator
+# def main_function_1():
+#     print("Main function1 start")
+#
+# @datetime_decorator
+# def main_function_2():
+#     print("Main function2 start")
+#
+# @datetime_decorator
+# def main_function_3():
+#     print("Main function3 start")
+#
+#
+# main_function_1()
+# main_function_2()
+# main_function_3()
 
 
-def datetime_decorator(func): # 데코레이터로 사용할 함수 만들어줌 closure 형태로
-    def decorated():
-        print(f"docorator_inner_function_before_work: {datetime.datetime.now()}")
-        func()
-        print(f"docorator_inner_function_after_work: {datetime.datetime.now()}")
-    return decorated()
+import time
+import contextlib
 
-@datetime_decorator
-def main_function_1():
-    print("Main function1 start")
+class Timer(contextlib.ContextDecorator):
+    def __init__(self, name):
+        self.name = name
 
-@datetime_decorator
-def main_function_2():
-    print("Main function2 start")
+    def __enter__(self):
+        self.start = time.time()
 
-@datetime_decorator
-def main_function_3():
-    print("Main function3 start")
+    def __exit__(self, ex_type, ex_value, ex_traceback):
+        self.end = time.time()
+        operation_time = self.end - self.start
+        print(f"{self.name}의 수행시간 : {operation_time}")
 
+@Timer("a()")
+def a():
+    return [i for i in range(1000000)]
 
-main_function_1()
-main_function_2()
-main_function_3()
+@Timer("b()")
+def b():
+    result = []
+    for i in range(1000000):
+        result.append(i)
+
+b()
+a()
